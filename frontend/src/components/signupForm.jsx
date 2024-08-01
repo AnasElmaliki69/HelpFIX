@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/Form.module.css';
+import styles from '@/styles/Form.module.css';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 
 const UserForm = () => {
+
+  const router = useRouter();
+
   const [formData, setFormData] = useState({
     U_name: '',
-    nom: '',
-    prenom: '',
+    lastName: '',
+    firstName: '',
     email: '',
     password: '',
     confirmPassword: '',
-    RoleType: 'admin', // Default role type
+    RoleType: 'client', // Default role type
     address: {
       street: '',
       city: '',
@@ -64,7 +70,7 @@ const UserForm = () => {
       return;
     }
 
-    fetch('http://localhost:5000/api/users', {
+    fetch('http://localhost:5000/user/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -74,11 +80,12 @@ const UserForm = () => {
       .then(response => response.json())
       .then(data => {
         setResult(JSON.stringify(data, null, 2));
-        setSuccess('User created successfully');
+       // setSuccess(router.push("LoginPage"));
+           
         fetchUsers(); // Fetch updated user list after submission
         setTimeout(() => {
-          setSuccess('');
-          window.location.reload(); // Refresh the page after a short delay
+          setSuccess("compte bien cree");
+        window.location.reload(); // Refresh the page after a short delay
         }, 2000); // Adjust the delay as needed
       })
       .catch(error => {
@@ -88,7 +95,7 @@ const UserForm = () => {
 
   // Fetch users
   const fetchUsers = () => {
-    fetch('http://localhost:5000/api/users')
+    fetch('http://localhost:5000/user/register')
       .then(response => response.json())
       .then(data => {
         setUserList(data);
@@ -114,10 +121,10 @@ const UserForm = () => {
         <input type="text" id="U_name" name="U_name" value={formData.U_name} onChange={handleInputChange} required /><br />
 
         <label htmlFor="nom">Last Name:</label>
-        <input type="text" id="nom" name="nom" value={formData.nom} onChange={handleInputChange} required /><br />
+        <input type="text" id="nom" name="lastName" value={formData.lastName} onChange={handleInputChange} required /><br />
 
         <label htmlFor="prenom">First Name:</label>
-        <input type="text" id="prenom" name="prenom" value={formData.prenom} onChange={handleInputChange} required /><br />
+        <input type="text" id="prenom" name="firstName" value={formData.firstName} onChange={handleInputChange} required /><br />
 
         <label htmlFor="email">Email:</label>
         <input type="email" id="email" name="email" value={formData.email} onChange={handleInputChange} required /><br />
@@ -156,7 +163,7 @@ const UserForm = () => {
         <button type="submit">Create User</button>
       </form>
     </div>
-  );
+  ); 
 };
 
 export default UserForm;

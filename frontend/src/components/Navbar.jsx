@@ -1,9 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import jwtDecode from 'jwt-decode';
 import styles from '../styles/Navbar.module.css';
+
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        setUserName(decodedToken.firstName || ''); // Assuming the token has a `firstName` field
+      } catch (error) {
+        console.error('Invalid token:', error);
+      }
+    }
+  }, []);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -22,7 +37,9 @@ function Navbar() {
           />
         </Link>
       </div>
-        <span className={styles.HelloPhrase}> Hello !</span>  {/*Ici dans ce composant faire une fonction loggedOn comme ça quand le client est connecté cela fait Hello {name}*/}
+      <span className={styles.HelloPhrase}>
+        Hello {userName ? userName : ''}!
+      </span>
       <button className={styles.burger} onClick={toggleMenu}>
         <span className={styles.burgerLine}></span>
         <span className={styles.burgerLine}></span>
