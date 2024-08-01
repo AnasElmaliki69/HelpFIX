@@ -25,6 +25,8 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
+    display: flex;
+    align-items: center;
   }
   
   .submitButton {
@@ -37,6 +39,7 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    text-align: center;
   }
   
   .submitButton:hover {
@@ -54,4 +57,3 @@
   .signInLink:hover {
     text-decoration: underline;
   }
-  
